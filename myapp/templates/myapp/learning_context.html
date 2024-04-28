@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Name: {{ student.name }}
+    Age: {{ student.age }}
+    Email: {{ student.email }}
+    Address: {{ student.address }}
+    <br><br><br>
+{% for s in students %}
+    Name: {{ s.name | title }} <br><br>
+    Age: {{ s.age }} <br><br>
+    Email: {{ s.email }} <br><br>
+    Address: {{ s.address }} <br><br>
+
+{% endfor %}
+
+{{students.0.name}}
+</body>
+</html>

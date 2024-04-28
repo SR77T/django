@@ -1,0 +1,31 @@
+{% extends 'commons/layouts/base.html' %}
+
+
+
+{% block content %}
+    <br><br>
+    <div class="container">
+        <h1> classroom</h1>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Name: </th>
+                    <th scope="col">Section: </th>
+                  
+                </thead>
+                <tbody>
+                    {% for c in classrooms %}
+                  <tr>
+                    
+                    <td>{{ c.name}}</td>
+                    <td>{{ c.section}}</td>
+                    
+                  </tr>
+                {%endfor%}
+                </tbody>
+              </table>
+        </div>
+
+    </div>
+{%endblock %}
