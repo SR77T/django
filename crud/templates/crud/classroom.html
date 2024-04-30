@@ -3,10 +3,16 @@
 
 
 {% block content %}
-{% include 'commons/includes/nav.html' %}
+{% include 'includes/nav.html' %}
 
     <br><br>
     <div class="container">
+        <form method = "post" action="{% url 'crud_classroom' %}">
+            {% csrf_token %}
+            <input name = "classroom_name">
+            <br><br>
+            <button type = "submit"> Add Classroom</button>
+        </form>
         <h1> classroom</h1>
         <div>
             <table class="table table-striped">
