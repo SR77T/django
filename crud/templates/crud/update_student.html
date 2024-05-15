@@ -1,0 +1,77 @@
+{% extends 'commons/layouts/base.html'%}
+{% load static %}
+
+{% block title %}
+Student Update
+{% endblock%}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                {% if student.studentprofile.profile_picture %}
+                    <img src="{{student.studentprofile.profile_picture.url }}" alt="profile_picture" style="height: 300px; width: 300px; background-size: cover;" >
+                    {% else %}
+                    <img src="{% static 'crud/dummy.jpg' %}" alt="profile_picture" style="height: 300px; width: 300px;">
+                 {% endif %}
+                <br>
+                <input type="file" name="profile_picture" accept=".png, .jpg, jpeg" >
+                {% if student.studentprofile.profile_picture %}
+                <a href="{{ student.studentprofile.profile_picture.url }}" target="_blank">{{ student.studentprofile.profile_picture }}</a>
+                <input type="checkbox" name="pp_clear" id="profile_picture-clear_id">
+                <label for="profile_picture-clear_id">Clear</label></span><br>
+            {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h2>Student Update</h2>
+                <div class="form-group">
+                    <label for="">Name</label>
+                    <input type="text" name="name" value="{{student.name}}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Age</label>
+                    <input type="text" name="age" value="{{student.age}}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <input type="text" name="email" value="{{student.email}}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="">Address</label>
+                    <input type="text" name="address" value="{{student.address}}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Classroom</label>
+                    <select class="form-control" id="exampleFormControlSelect1" style = "width: 50%" name = "classroom">
+                    <option selected value="null"> Select class</option>
+        
+                    {% for class in classrooms %}
+                    {% if student.classroom.id == class.id %}
+                      <option selected value="{{class.id}}"> {{class.name}}</option>
+                      {% else  %}
+                      <option value="{{class.id}}"> {{class.name}}</option>
+                      {% endif %}
+                     {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="">Phone</label>
+                    <input type="text" name="phone" value="{{student.studentprofile.phone}}" class="form-control" style="width: 50%;" >
+                </div>
+                <div class="form-group">
+                    <label for="">Bio</label>
+                    <textarea name ="bio" name="bio" value="{{student.studentprofile.bio}}" class="form-control" style="width: 50%;" row = "5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary"> Submit</button>
+                <a href="{% url 'detail_student' student.id %}" class="btn btn-outline-success">Back</a>
+            </div>
+        </div>
+    </form>
+    
+</div>
+
+
+{% endblock %}

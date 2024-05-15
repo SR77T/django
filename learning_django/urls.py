@@ -14,13 +14,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings 
 # from myapp.views import home
+
+handler404 = "commons.views.not_found_404"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("commons/", include("commons.urls")), #URL chaining
     path("crud/", include('crud.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('quiz/', include('quiz.urls')),
+    path('classbased/', include ('classbased.urls', namespace = "classbased")),
+
     path("", include("myapp.urls"))
 ]
+
+
+if settings.DEBUG :
+     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+

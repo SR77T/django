@@ -1,0 +1,18 @@
+{% extends 'commons/layouts/base.html'%}
+
+{% block title %}
+Delete student
+{% endblock%}
+
+{% block content %}
+{% include 'includes/nav.html' %}
+<div class="container">
+    <h2>Are you sure want to delete {{student.name }}</h2>
+    <form method ="post">
+        {% csrf_token %}
+        <button type = "submit" class = "btn btn-danger">Delete</button>
+        <a href="{% url 'crud_student'%}" class = "btn btn-primary">Cancel</a>
+    </form>
+</div>
+
+{% endblock %}

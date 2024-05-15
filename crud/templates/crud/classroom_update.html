@@ -10,9 +10,9 @@
     <div class="container">
         <form method="post"> 
             {% csrf_token %}
-            <input name ="classroom_name" value = {{classroom.name}}>
+            <input name ="classroom_name" value = {{classroom.name}}> <br><br>
             <button type = "submit", class = "btn btn-primary">Update</button>
-            <a href="{% url 'crud_classroom' %}">Cancel</a>
+            <a href="{% url 'crud_classroom'  %}" class = "btn btn-danger">Cancel</a>
         </form>
 
     </div>

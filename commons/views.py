@@ -25,3 +25,5 @@ def classroom(request):
     ]
     return render(request, template_name = "commons/classroom.html", context = {"classrooms": classrooms})
 
+def not_found_404(r, *args, **kwargs):
+    return render(r, template_name="404_not_found.html")
