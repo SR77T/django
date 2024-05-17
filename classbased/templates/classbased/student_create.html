@@ -9,7 +9,10 @@ Create student
 <div class="container">
     <form method = "post" class="form-control">
         {% csrf_token %}
-        {{ form.as_p}}
+        <div class="form-group" style="width: 50%">
+        {{ form }}
+
+        </div>
        
        
         <br>
