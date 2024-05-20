@@ -29,9 +29,12 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('quiz/', include('quiz.urls')),
     path('classbased/', include ('classbased.urls', namespace = "classbased")),
+    path('api/', include("api.urls", namespace = "api")),
 
     path("", include("myapp.urls"))
 ]
+
+
 
 
 if settings.DEBUG :
