@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from crud.models import Student, ClassRoom
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ClassRoomSerializer
+from .serializers import ClassRoomSerializer,StudentSerializer, StudentModelSerializer
 
 
 class StudentDetailView(APIView):
@@ -143,6 +143,77 @@ class ClassRoomUsingSerializerDetailView(APIView):
             }, status = status.HTTP_404_NOT_FOUND)
         serializer = ClassRoomSerializer(classroom)
         return Response(serializer.data)
+
+class ClassRoomListUsingSerializerView(APIView):
+    def get(self, *args, **kwargs):
+        classrooms = ClassRoom.objects.all()
+        serializer = ClassRoomSerializer(classrooms, many = True)  #serialization
+        return Response(serializer.data)
+
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        serializer = ClassRoomSerializer(data = data)  #deserialization
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            c = ClassRoom.objects.create(**validated_data)
+            return Response({
+                "message" : "Classroom created successfully",
+                "id" : c.id, 
+                "name" : c.name
+            }, status = status.HTTP_201_CREATED)
+        return Response({
+            "message" : "Could not create class!",
+            "errors" : serializer.errors
+
+        }, status = status.HTTP_400_BAD_REQUEST)
+
+class StudentUsingSerializerView(APIView):
+    def get (self, *args, **kwargs):
+        students = Student.objects.all()
+        ser = StudentSerializer(students, many = True)
+        return Response(ser.data)
+
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        serializer = StudentSerializer(data = data)  #deserialization
+        if serializer.is_valid():
+            # s = serializer.save()
+            validated_data = serializer.validated_data
+            s = Student.objects.create(**validated_data)
+            return Response({
+                "message" : "Student created successfully",
+                "id" : s.id, 
+                "name" : s.name
+            }, status = status.HTTP_201_CREATED)
+        return Response({
+            "message" : "Could not create student!",
+            "errors" : serializer.errors
+
+        }, status = status.HTTP_400_BAD_REQUEST)
+
+class StudentUsingModelSerView(APIView):
+
+    def get(self, *args, **kwargs):
+        students = Student.objects.all()
+        serializer = StudentModelSerializer(students, many = True)
+        return Response(serializer.data)
+    def post(self, *args, **kwargs):
+        data = self.request.data
+        ser = StudentModelSerializer(data = data)
+        if ser.is_valid():
+            s = ser.save()
+            return Response({
+                "message" : "Student created successfully",
+                "id" : s.id, 
+                "name" : s.name
+            }, status = status.HTTP_201_CREATED)
+        return Response({
+            "message" : "Could not create student!",
+            "errors" : serializer.errors
+
+        }, status = status.HTTP_400_BAD_REQUEST)
+        
+        
 
 
         

@@ -17,6 +17,13 @@ urlpatterns = [
 
 using_serializer_path= [
     path('classroom-using-serializer/<int:id>/', views.ClassRoomUsingSerializerDetailView.as_view()),
+    path('using-serializer/classroom/', views.ClassRoomListUsingSerializerView.as_view()),
+    path('using-serializer/student/', views.StudentUsingSerializerView.as_view()),
+
+
+]
+using_model_serializer_paths = [
+    path("using-model-serializer/student/", views.StudentUsingModelSerView.as_view())
 ]
 
-urlpatterns += using_serializer_path
+urlpatterns += using_serializer_path + using_model_serializer_paths
