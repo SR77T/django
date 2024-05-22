@@ -10,9 +10,7 @@ urlpatterns = [
     path("classroom/", views.ClassRoomView.as_view(), name = "classroom"),
     path("classroom/<int:id>/", views.ClassRoomView.as_view(), name = "classroom_patch"),
 
-
-
-    
+ 
 ]
 
 using_serializer_path= [
@@ -26,4 +24,20 @@ using_model_serializer_paths = [
     path("using-model-serializer/student/", views.StudentUsingModelSerView.as_view())
 ]
 
-urlpatterns += using_serializer_path + using_model_serializer_paths
+generic_urls = [
+    path("generic/classroom-list/", views.ClassRoomGenericListView.as_view()),
+    path("generic/classroom-create/", views.ClassRoomGenericCreateView.as_view()),
+    path("generic/classroom/", views.ClassRoomGenericView.as_view()),
+    path("generic/classroom-update/<int:pk>/", views.ClassRoomGenericUpdateView.as_view()),
+    path("generic/classroom-detail/<int:pk>/", views.ClassRoomGenericDetailView.as_view()),
+    path("generic/classroom-delete/<int:pk>/", views.ClassRoomGenericDeleteView.as_view()),
+
+
+
+
+
+
+
+]
+
+urlpatterns += using_serializer_path + using_model_serializer_paths + generic_urls

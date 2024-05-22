@@ -2,7 +2,8 @@ from rest_framework.views import APIView
 from crud.models import Student, ClassRoom
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ClassRoomSerializer,StudentSerializer, StudentModelSerializer
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, DestroyAPIView
+from .serializers import ClassRoomSerializer,StudentSerializer, StudentModelSerializer, ClassRoomModelSerializer
 
 
 class StudentDetailView(APIView):
@@ -170,12 +171,12 @@ class ClassRoomListUsingSerializerView(APIView):
 class StudentUsingSerializerView(APIView):
     def get (self, *args, **kwargs):
         students = Student.objects.all()
-        ser = StudentSerializer(students, many = True)
+        ser = StudentSerializer(students, many = True, context = {"request" : self.request})
         return Response(ser.data)
 
     def post(self, *args, **kwargs):
         data = self.request.data
-        serializer = StudentSerializer(data = data)  #deserialization
+        serializer = StudentSerializer(data = data, context = {"request" : self.request})  #deserialization
         if serializer.is_valid():
             # s = serializer.save()
             validated_data = serializer.validated_data
@@ -195,11 +196,11 @@ class StudentUsingModelSerView(APIView):
 
     def get(self, *args, **kwargs):
         students = Student.objects.all()
-        serializer = StudentModelSerializer(students, many = True)
+        serializer = StudentModelSerializer(students, many = True,  context = {"request" : self.request})
         return Response(serializer.data)
     def post(self, *args, **kwargs):
         data = self.request.data
-        ser = StudentModelSerializer(data = data)
+        ser = StudentModelSerializer(data = data,  context = {"request" : self.request})
         if ser.is_valid():
             s = ser.save()
             return Response({
@@ -209,9 +210,37 @@ class StudentUsingModelSerView(APIView):
             }, status = status.HTTP_201_CREATED)
         return Response({
             "message" : "Could not create student!",
-            "errors" : serializer.errors
+            "errors" : ser.errors
 
         }, status = status.HTTP_400_BAD_REQUEST)
+
+
+class ClassRoomGenericListView(ListAPIView):
+    queryset = ClassRoom.objects.all()
+    serializer_class = ClassRoomModelSerializer
+
+class ClassRoomGenericCreateView(CreateAPIView):
+    queryset = ClassRoom.objects.all()
+    serializer_class = ClassRoomModelSerializer
+
+class ClassRoomGenericView(ListCreateAPIView):
+    queryset = ClassRoom.objects.all()
+    serializer_class = ClassRoomModelSerializer
+
+class ClassRoomGenericUpdateView(UpdateAPIView):
+    queryset = ClassRoom.objects.all()
+    serializer_class = ClassRoomModelSerializer
+
+class ClassRoomGenericDetailView(RetrieveAPIView):
+    queryset = ClassRoom.objects.all()
+    serializer_class = ClassRoomModelSerializer
+
+class ClassRoomGenericDeleteView(DestroyAPIView):
+    queryset = ClassRoom.objects.all()
+    serializer_class = ClassRoomModelSerializer
+
+
+
         
         
 
