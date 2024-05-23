@@ -1,10 +1,14 @@
 from rest_framework.views import APIView
 from crud.models import Student, ClassRoom
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, DestroyAPIView
-from .serializers import ClassRoomSerializer,StudentSerializer, StudentModelSerializer, ClassRoomModelSerializer
 
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+from rest_framework import status
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import ClassRoomSerializer,StudentSerializer, StudentModelSerializer, ClassRoomModelSerializer
+from rest_framework.viewsets import ModelViewSet
 
 class StudentDetailView(APIView):
     def get(self, *args, **kwargs):
@@ -27,11 +31,13 @@ class StudentDetailView(APIView):
         # })
     def patch(self, *args, **kwargs):
         data = self.request.data
+        student_id = kwargs["id"]
         if not data:
             return Response({
                 "message" : "please mention name, age, address, and email."
             })
-        student_id = kwargs["id"]
+        # student_id = kwargs["id"]
+
         try:
             student = Student.objects.get(id = student_id)
         except Student.DoesNotExist:
@@ -238,6 +244,28 @@ class ClassRoomGenericDetailView(RetrieveAPIView):
 class ClassRoomGenericDeleteView(DestroyAPIView):
     queryset = ClassRoom.objects.all()
     serializer_class = ClassRoomModelSerializer
+
+
+
+class StudentGenericView(ListCreateAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentModelSerializer
+
+
+class StudentRetrieveUpdateDestroyGenericView(RetrieveUpdateDestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentModelSerializer
+
+class ClassRoomViewSet(ModelViewSet):
+    serializer_class = ClassRoomModelSerializer
+    queryset = ClassRoom.objects.all()
+    
+class StudentViewSet(ModelViewSet):
+    authentication_classes =  [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = StudentModelSerializer
+    queryset = Student.objects.all()
+    
 
 
 

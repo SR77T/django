@@ -39,9 +39,6 @@ class Quiz(models.Model):
     class Meta:
         verbose_name_plural = "Quizzes"
 
-    def __str__(self):
-        return self.title
-
 
 class UserQuizAttempt(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_attempts")
